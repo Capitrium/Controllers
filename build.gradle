@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+allprojects {
+    apply plugin: "idea"
+
+    group 'com.capitriumgames'
+    version '1.0-SNAPSHOT'
+
+    ext {
+        gdxVersion = '1.9.3'
+        jinputVersion = '2.0.7-SNAPSHOT'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+mainClassName = "ConfigurableControllerTest"
+
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-jnigen:$gdxVersion"
+    compile "net.java.jinput:jinput:$jinputVersion"
+    compile "net.java.jinput:jinput-platform:$jinputVersion:natives-windows"
+    compile "net.java.jinput:jinput-platform:$jinputVersion:natives-linux"
+    compile "net.java.jinput:jinput-platform:$jinputVersion:natives-osx"
+}
