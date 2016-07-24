@@ -1,9 +1,9 @@
 import com.badlogic.gdx.utils.Array;
-import com.capitriumgames.controllers.ControllerManager;
-import com.capitriumgames.input.InputAction;
-import com.capitriumgames.input.InputContext;
-import com.capitriumgames.input.InputEventConfiguration;
-import com.capitriumgames.input.InputHandler;
+import com.capitriumgames.controllers.manager.ControllerManager;
+import com.capitriumgames.controllers.input.InputAction;
+import com.capitriumgames.controllers.input.InputContext;
+import com.capitriumgames.controllers.input.InputEventConfiguration;
+import com.capitriumgames.controllers.input.InputHandler;
 
 import net.java.games.input.Component;
 import net.java.games.input.Event;

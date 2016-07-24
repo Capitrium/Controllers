@@ -1,8 +1,8 @@
-import com.capitriumgames.controllers.ControllerManager;
-import com.capitriumgames.controllers.ManagedController;
-import com.capitriumgames.input.InputAction;
-import com.capitriumgames.input.InputContext;
-import com.capitriumgames.input.InputHandler;
+import com.capitriumgames.controllers.manager.ControllerManager;
+import com.capitriumgames.controllers.manager.ManagedController;
+import com.capitriumgames.controllers.input.InputAction;
+import com.capitriumgames.controllers.input.InputContext;
+import com.capitriumgames.controllers.input.InputHandler;
 
 import net.java.games.input.Component;
 import net.java.games.input.Event;
