@@ -48,8 +48,8 @@ public class ControllerManager {
     public int getNumControllers() { return managedControllers.size; }
 
     public boolean poll() {
-        for (ManagedController m : managedControllers) {
-            if (!m.poll()) {
+        for(int i = 0; i < managedControllers.size; i++) {
+            if (!managedControllers.get(i).poll()) {
                 refreshRequired = true;
             }
         }
