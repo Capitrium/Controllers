@@ -1,5 +1,8 @@
 package com.capitriumgames.controllers.input;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Json.Serializable;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import net.java.games.input.Component;
@@ -7,7 +10,7 @@ import net.java.games.input.Component;
 /**
  * @author Capitrium
  */
-public class InputContext<T> {
+public class InputContext<T> implements Serializable {
 
     /**
      * The game object to be manipulated by the bound input actions in this context.
@@ -86,5 +89,18 @@ public class InputContext<T> {
             return actionMap.get(inputMap.findKey(inputBinding, false));
         }
         return null;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("inputMap", inputMap);
+        json.writeValue("actionMap", actionMap);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        inputMap = json.readValue(ObjectMap.class, String.class, jsonData.get("inputMap"));
+        actionMap = json.readValue(ObjectMap.class, InputAction.class, jsonData.get("actionMap"));
     }
 }
