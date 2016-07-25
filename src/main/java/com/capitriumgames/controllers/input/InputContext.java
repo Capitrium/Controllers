@@ -39,11 +39,16 @@ public class InputContext<T> implements Serializable {
 
     /**
      * Binds the given {@link Component.Identifier} to a user-defined integer constant.
+     * If an {@link InputAction} was bound to the old component, it will be re-bound to the new component.
      * @param inputBinding The constant to which the component identifier will be bound.
      * @param inputComponentName The component identifier to bind.
      */
     public void addInputBinding(String inputBinding, String inputComponentName) {
-        inputMap.put(inputBinding, inputComponentName);
+        String oldComponentName = inputMap.put(inputBinding, inputComponentName);
+        if (oldComponentName != null) {
+            actionMap.put(inputComponentName, actionMap.get(oldComponentName));
+            actionMap.remove(oldComponentName);
+        }
     }
 
     /**
