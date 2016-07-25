@@ -62,7 +62,7 @@ public class InputHandler<T> {
      */
     public boolean handleInputAction(Component.Identifier boundInput, float inputValue) {
         if (activeContext != null) {
-            handledAction = activeContext.getInputAction(activeContext.getInputBinding(boundInput));
+            handledAction = activeContext.getInputAction(activeContext.getInputBinding(boundInput.getName()));
             if (handledAction != null) {
                 manualEvent.set(null, inputValue, TimeUtils.nanoTime());
                 handledAction.execute(activeContext.inputTarget, manualEvent);
@@ -79,7 +79,7 @@ public class InputHandler<T> {
      */
     public boolean handleInputEvent(Event inputEvent) {
         if (activeContext != null) {
-            handledInputBinding = activeContext.getInputBinding(inputEvent.getComponent().getIdentifier());
+            handledInputBinding = activeContext.getInputBinding(inputEvent.getComponent().getIdentifier().getName());
             handledAction = activeContext.getInputAction(handledInputBinding);
             if (handledAction != null) {
                 handledAction.execute(activeContext.inputTarget, inputEvent);

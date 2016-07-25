@@ -61,7 +61,7 @@ public class MultipleControllerTest {
 
         public TestInputContext(ManagedController inputTarget) {
             setInputTarget(inputTarget);
-            addInputBinding(TEST_BUTTON_PRESSED, Component.Identifier.Button._0);
+            addInputBinding(TEST_BUTTON_PRESSED, Component.Identifier.Button._0.getName());
             bindInputAction(TEST_BUTTON_PRESSED, new InputAction<ManagedController>() {
                 @Override
                 public void execute(ManagedController source, Event inputEvent) {
