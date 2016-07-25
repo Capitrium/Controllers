@@ -65,6 +65,15 @@ public class InputContext<T> implements Serializable {
     }
 
     /**
+     * Returns the name of the input component associated with the given user-defined input constant.
+     * @param inputBinding The name of the user-defined action constant.
+     * @return The name of the input component for the given user-defined constant.
+     */
+    public String getBindingComponentName(String inputBinding) {
+        return inputMap.get(inputBinding);
+    }
+
+    /**
      * Attaches the given {@link InputAction} to the {@link Component.Identifier#name} currently bound to the
      * given inputBinding.
      * @param inputBinding The constant for the desired {@link Component.Identifier}.
