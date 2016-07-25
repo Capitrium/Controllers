@@ -1,11 +1,13 @@
 package com.capitriumgames.controllers.input;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import net.java.games.input.Component;
+import net.java.games.input.Component.Identifier;
 
 /**
  * @author Capitrium
@@ -18,13 +20,15 @@ public class InputContext<T> implements Serializable {
     protected T inputTarget;
 
     /**
-     * A map of user-defined action constants to {@link Component.Identifier} instances.
+     * A map of user-defined action constants to input component identifiers. An input component can be identified
+     * by interfaces that provide a name for each identifier in the interface, such as {@link Identifier#getName()}
+     * or {@link Input.Keys#toString(int)}.
      */
     protected ObjectMap<String, String> inputMap =
             new ObjectMap<String, String>();
 
     /**
-     * A map of {@link Component.Identifier#name} values to user-defined {@link InputAction} objects.
+     * A map of input component identifier names to user-defined {@link InputAction} objects.
      */
     protected ObjectMap<String, InputAction<T>> actionMap =
             new ObjectMap<String, InputAction<T>>();
@@ -38,10 +42,10 @@ public class InputContext<T> implements Serializable {
     }
 
     /**
-     * Binds the given {@link Component.Identifier} to a user-defined integer constant.
+     * Binds the given named input component to a user-defined integer constant.
      * If an {@link InputAction} was bound to the old component, it will be re-bound to the new component.
      * @param inputBinding The constant to which the component identifier will be bound.
-     * @param inputComponentName The component identifier to bind.
+     * @param inputComponentName The name of the component identifier to bind.
      */
     public void addInputBinding(String inputBinding, String inputComponentName) {
         String oldComponentName = inputMap.put(inputBinding, inputComponentName);
@@ -52,9 +56,9 @@ public class InputContext<T> implements Serializable {
     }
 
     /**
-     * Returns the user-defined input constant associated with the given {@link Component.Identifier}.
-     * @param inputComponentName The {@link Component.Identifier#name} to be translated to a user-defined constant.
-     * @return The user-defined constant for the given {@link Component.Identifier#name}.
+     * Returns the user-defined input constant associated with the given inputComponentName.
+     * @param inputComponentName The name of the input component identifier to be translated to a user-defined constant.
+     * @return The user-defined constant for the given inputComponentName.
      */
     public String getInputBinding(String inputComponentName) {
         return inputMap.findKey(inputComponentName, false);
@@ -73,11 +77,11 @@ public class InputContext<T> implements Serializable {
     }
 
     /**
-     * Creates a new input binding for the given {@link Component.Identifier#name}
+     * Creates a new input binding for the given inputComponentName
      * and attaches the given {@link InputAction} to the new input binding.
      * @param inputBinding The name for the input binding.
-     * @param inputComponentName The {@link Component.Identifier#name} to bind the input to.
-     * @param inputAction The {@link InputAction} to be bound to the {@link Component.Identifier#name}.
+     * @param inputComponentName The name of the input component identifier to bind the input to.
+     * @param inputAction The {@link InputAction} to be bound to the inputComponentName.
      */
     public void bindInputAction(String inputBinding, String inputComponentName, InputAction<T> inputAction) {
         inputMap.put(inputBinding, inputComponentName);

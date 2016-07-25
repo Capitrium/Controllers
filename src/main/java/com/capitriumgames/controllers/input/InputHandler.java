@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.capitriumgames.controllers.manager.ControllerManager;
 import com.capitriumgames.controllers.manager.ManagedController;
 
-import net.java.games.input.Component;
 import net.java.games.input.Event;
 
 /**
@@ -12,7 +11,7 @@ import net.java.games.input.Event;
  */
 public class InputHandler<T> {
 
-    public InputContext<T> activeContext;
+    private InputContext<T> activeContext;
     private InputAction<T> handledAction;
     private String handledInputBinding;
 
@@ -41,7 +40,7 @@ public class InputHandler<T> {
      * @param inputValue the value of the input event used when executing the action.
      * @return true if the action was executed, otherwise false.
      */
-    public boolean handleInputAction(String inputBinding, float inputValue) {
+    public boolean executeInputAction(String inputBinding, float inputValue) {
         if (activeContext != null) {
             handledAction = activeContext.getInputAction(inputBinding);
             if (handledAction != null) {
@@ -56,17 +55,20 @@ public class InputHandler<T> {
     /**
      * Manually executes the {@link InputAction} bound to the given boundInput, passing in an optional
      * {@link Event} value to {@link InputAction#execute}.
-     * @param boundInput the {@link Component.Identifier} bound to the desired {@link InputAction}.
+     * @param boundInputComponentName the name of the component identifier bound to the desired {@link InputAction}.
      * @param inputValue the value of the input event used when executing the action.
      * @return true if the action was executed, otherwise false.
      */
-    public boolean handleInputAction(Component.Identifier boundInput, float inputValue) {
+    public boolean handleInputAction(String boundInputComponentName, float inputValue) {
         if (activeContext != null) {
-            handledAction = activeContext.getInputAction(activeContext.getInputBinding(boundInput.getName()));
-            if (handledAction != null) {
-                manualEvent.set(null, inputValue, TimeUtils.nanoTime());
-                handledAction.execute(activeContext.inputTarget, manualEvent);
-                return true;
+            handledInputBinding = activeContext.getInputBinding(boundInputComponentName);
+            if (handledInputBinding != null) {
+                handledAction = activeContext.getInputAction(activeContext.getInputBinding(boundInputComponentName));
+                if (handledAction != null) {
+                    manualEvent.set(null, inputValue, TimeUtils.nanoTime());
+                    handledAction.execute(activeContext.inputTarget, manualEvent);
+                    return true;
+                }
             }
         }
         return false;
@@ -80,10 +82,12 @@ public class InputHandler<T> {
     public boolean handleInputEvent(Event inputEvent) {
         if (activeContext != null) {
             handledInputBinding = activeContext.getInputBinding(inputEvent.getComponent().getIdentifier().getName());
-            handledAction = activeContext.getInputAction(handledInputBinding);
-            if (handledAction != null) {
-                handledAction.execute(activeContext.inputTarget, inputEvent);
-                return true;
+            if (handledInputBinding != null) {
+                handledAction = activeContext.getInputAction(handledInputBinding);
+                if (handledAction != null) {
+                    handledAction.execute(activeContext.inputTarget, inputEvent);
+                    return true;
+                }
             }
         }
         return false;
