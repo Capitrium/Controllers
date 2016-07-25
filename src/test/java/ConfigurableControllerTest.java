@@ -308,7 +308,7 @@ public class ConfigurableControllerTest {
         public static final String LEFT_AXIS_Y_POSITIVE = "left-axis-y+";
 
         public boolean containsBoundInput(String binding) {
-            return inputMap.containsValue(binding, false);
+            return inputMap.containsKey(binding);
         }
 
     }

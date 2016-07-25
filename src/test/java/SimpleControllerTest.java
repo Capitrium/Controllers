@@ -53,7 +53,7 @@ public class SimpleControllerTest {
         public static final String TEST_BUTTON_PRESSED = "test-button-pressed";
 
         public TestInputContext() {
-            addInputBinding(Component.Identifier.Button._0, TEST_BUTTON_PRESSED);
+            addInputBinding(TEST_BUTTON_PRESSED, Component.Identifier.Button._0);
             bindInputAction(TEST_BUTTON_PRESSED, new InputAction<Object>() {
                 @Override
                 public void execute(Object source, Event inputEvent) {

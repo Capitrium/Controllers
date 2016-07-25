@@ -55,8 +55,7 @@ public class ManagedController {
                     // eventListener.inputEventDeadZone used as a dead-zone check against the analog event value
                     if (Math.abs(queuedEvent.getValue()) > eventListener.inputEventAbsValue) {
                         context.addInputBinding(
-                                queuedEvent.getComponent().getIdentifier(),
-                                eventListener.inputEventName
+                                eventListener.inputEventName, queuedEvent.getComponent().getIdentifier()
                         );
                         inputEventListeners.removeIndex(i);
                     }
@@ -64,8 +63,7 @@ public class ManagedController {
                     // eventListener.inputEventDeadZone used as the digital event value
                     if (queuedEvent.getValue() == eventListener.inputEventAbsValue) {
                         context.addInputBinding(
-                                queuedEvent.getComponent().getIdentifier(),
-                                eventListener.inputEventName
+                                eventListener.inputEventName, queuedEvent.getComponent().getIdentifier()
                         );
                         inputEventListeners.removeIndex(i);
                     }

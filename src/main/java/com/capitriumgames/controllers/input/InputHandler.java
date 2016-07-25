@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.capitriumgames.controllers.manager.ControllerManager;
 import com.capitriumgames.controllers.manager.ManagedController;
 
+import net.java.games.input.Component;
 import net.java.games.input.Event;
 
 /**
@@ -11,7 +12,7 @@ import net.java.games.input.Event;
  */
 public class InputHandler<T> {
 
-    private InputContext<T> activeContext;
+    public InputContext<T> activeContext;
     private InputAction<T> handledAction;
     private String handledInputBinding;
 
@@ -43,6 +44,25 @@ public class InputHandler<T> {
     public boolean handleInputAction(String inputBinding, float inputValue) {
         if (activeContext != null) {
             handledAction = activeContext.getInputAction(inputBinding);
+            if (handledAction != null) {
+                manualEvent.set(null, inputValue, TimeUtils.nanoTime());
+                handledAction.execute(activeContext.inputTarget, manualEvent);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Manually executes the {@link InputAction} bound to the given boundInput, passing in an optional
+     * {@link Event} value to {@link InputAction#execute}.
+     * @param boundInput the {@link Component.Identifier} bound to the desired {@link InputAction}.
+     * @param inputValue the value of the input event used when executing the action.
+     * @return true if the action was executed, otherwise false.
+     */
+    public boolean handleInputAction(Component.Identifier boundInput, float inputValue) {
+        if (activeContext != null) {
+            handledAction = activeContext.getInputAction(activeContext.getInputBinding(boundInput));
             if (handledAction != null) {
                 manualEvent.set(null, inputValue, TimeUtils.nanoTime());
                 handledAction.execute(activeContext.inputTarget, manualEvent);

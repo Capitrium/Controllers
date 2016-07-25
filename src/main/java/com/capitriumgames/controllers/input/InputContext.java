@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import net.java.games.input.Component;
+import net.java.games.input.Component.Identifier;
 
 /**
  * @author Capitrium
@@ -18,10 +19,10 @@ public class InputContext<T> implements Serializable {
     protected T inputTarget;
 
     /**
-     * A map of {@link Component.Identifier} instances to user-defined action constants.
+     * A map of user-defined action constants to {@link Component.Identifier} instances.
      */
-    protected ObjectMap<Component.Identifier, String> inputMap =
-            new ObjectMap<Component.Identifier, String>();
+    protected ObjectMap<String, Component.Identifier> inputMap =
+            new ObjectMap<String, Component.Identifier>();
 
     /**
      * A map of {@link Component.Identifier} instances to user-defined {@link InputAction} objects.
@@ -39,11 +40,11 @@ public class InputContext<T> implements Serializable {
 
     /**
      * Binds the given {@link Component.Identifier} to a user-defined integer constant.
-     * @param inputComponent The component identifier to bind.
      * @param inputBinding The constant to which the component identifier will be bound.
+     * @param inputComponent The component identifier to bind.
      */
-    public void addInputBinding(Component.Identifier inputComponent, String inputBinding) {
-        inputMap.put(inputComponent, inputBinding);
+    public void addInputBinding(String inputBinding, Identifier inputComponent) {
+        inputMap.put(inputBinding, inputComponent);
     }
 
     /**
@@ -52,7 +53,7 @@ public class InputContext<T> implements Serializable {
      * @return The user-defined constant for the given {@link Component.Identifier}.
      */
     public String getInputBinding(Component.Identifier inputComponent) {
-        return inputMap.get(inputComponent, null);
+        return inputMap.findKey(inputComponent, false);
     }
 
     /**
@@ -63,19 +64,19 @@ public class InputContext<T> implements Serializable {
      */
     public void bindInputAction(String inputBinding, InputAction<T> inputAction) {
         if (inputMap.findKey(inputBinding, false) != null) {
-            actionMap.put(inputMap.findKey(inputBinding, false), inputAction);
+            actionMap.put(inputMap.get(inputBinding), inputAction);
         }
     }
 
     /**
      * Creates a new input binding for the given {@link Component.Identifier} and attaches the given {@link InputAction}
      * to the new input binding.
-     * @param inputComponent The {@link Component.Identifier} to bind the input to.
      * @param inputBinding The name for the input binding.
-     * @param inputAction The {@link InputAction} to be bound to the {@link Component.Identifier}.
+     * @param inputComponent The {@link Identifier} to bind the input to.
+     * @param inputAction The {@link InputAction} to be bound to the {@link Identifier}.
      */
-    public void bindInputAction(Component.Identifier inputComponent, String inputBinding, InputAction<T> inputAction) {
-        inputMap.put(inputComponent, inputBinding);
+    public void bindInputAction(String inputBinding, Identifier inputComponent, InputAction<T> inputAction) {
+        inputMap.put(inputBinding, inputComponent);
         actionMap.put(inputComponent, inputAction);
     }
 
@@ -85,10 +86,7 @@ public class InputContext<T> implements Serializable {
      * @return The {@link InputAction} associated with the inputBinding value.
      */
     public InputAction<T> getInputAction(String inputBinding) {
-        if (inputMap.containsValue(inputBinding, false)) {
-            return actionMap.get(inputMap.findKey(inputBinding, false));
-        }
-        return null;
+        return actionMap.get(inputMap.get(inputBinding), null);
     }
 
     @Override
@@ -100,7 +98,7 @@ public class InputContext<T> implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public void read(Json json, JsonValue jsonData) {
-        inputMap = json.readValue(ObjectMap.class, String.class, jsonData.get("inputMap"));
+        inputMap = json.readValue(ObjectMap.class, Component.Identifier.class, jsonData.get("inputMap"));
         actionMap = json.readValue(ObjectMap.class, InputAction.class, jsonData.get("actionMap"));
     }
 }
