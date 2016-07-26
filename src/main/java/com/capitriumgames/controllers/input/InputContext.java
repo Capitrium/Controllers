@@ -80,7 +80,7 @@ public class InputContext<T> implements Serializable {
      * @param inputAction The {@link InputAction} be bound to the {@link Component.Identifier}.
      */
     public void bindInputAction(String inputBinding, InputAction<T> inputAction) {
-        if (inputMap.findKey(inputBinding, false) != null) {
+        if (inputMap.get(inputBinding) != null) {
             actionMap.put(inputMap.get(inputBinding), inputAction);
         }
     }
